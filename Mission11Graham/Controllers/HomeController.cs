@@ -1,31 +1,40 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mission11Graham.Models;
+using System.Linq;
+
 
 namespace Mission11Graham.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private IBookInterface _repo;
+    public int PageSize = 10;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IBookInterface repo)
     {
-        _logger = logger;
+        _repo = repo;
     }
-
-    public IActionResult Index()
+   
+    public IActionResult Index(int pageNum = 1)
     {
-        return View();
-    }
+        var booksQuery = _repo.Books
+            .OrderBy(b => b.BookId)
+            .Skip((pageNum - 1) * PageSize)
+            .Take(PageSize);
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        var totalBooks = _repo.Books.Count();
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var paginationInfo = new
+        {
+            CurrentPage = pageNum,
+            TotalPages = (int)Math.Ceiling((decimal)totalBooks / PageSize)
+        };
+
+        ViewBag.PaginationInfo = paginationInfo;
+
+        return View(booksQuery.ToList());
     }
 }
+

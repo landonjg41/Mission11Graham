@@ -1,8 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using Mission11Graham.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<BookstoreContext>(options =>
+{
+    options.UseSqlite(builder.Configuration["ConnectionStrings:BookstoreConnection"]);
+});
+
+builder.Services.AddScoped<IBookInterface, EFBookRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

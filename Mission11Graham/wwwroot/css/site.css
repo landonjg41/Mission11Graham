@@ -19,4 +19,26 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: #cfe2ff; /* Dark background color */
 }
+
+  .table.table-hover.table-dark thead th, .table.table-hover.table-dark tbody td {
+    color: #cfe2ff; /* Light gray text color */
+  }
+
+/* Change the background color of the navbar */
+.navbar {
+  background-color: #1a1e21 !important; /* Dark gray background */
+}
+
+/* Change the text color of links in the navbar */
+.navbar-light .navbar-nav .nav-link {
+  color: #ffffff !important; /* White text color */
+}
+
+/* Change the text color of the navbar brand */
+.navbar-light .navbar-brand {
+  color: #ffffff !important; /* White text color */
+}
+
+
